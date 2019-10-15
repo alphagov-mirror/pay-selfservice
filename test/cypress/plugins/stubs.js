@@ -7,6 +7,7 @@ const lodash = require('lodash')
 const userFixtures = require('../../fixtures/user_fixtures')
 const gatewayAccountFixtures = require('../../fixtures/gateway_account_fixtures')
 const transactionDetailsFixtures = require('../../fixtures/transaction_fixtures')
+const ledgerTransactionFixtures = require('../../fixtures/ledger_transaction_fixtures')
 const cardFixtures = require('../../fixtures/card_fixtures')
 const serviceFixtures = require('../../fixtures/service_fixtures')
 const goLiveRequestFixtures = require('../../fixtures/go_live_requests_fixture')
@@ -554,7 +555,7 @@ module.exports = {
         predicates: [{
           equals: {
             method: 'GET',
-            path: `/v2/api/accounts/${opts.gateway_account_id}/charges`,
+            path: `/v1/transaction?with_parent_transaction=true&account_id=${opts.gateway_account_id}&page=1&display_size=10`,
             headers: {
               'Accept': 'application/json'
             },
@@ -573,6 +574,47 @@ module.exports = {
       }
     ]
   },
+  getLedgerTransactionsSuccess: (opts = {}) => {
+    console.log('hit stubs')
+    console.log(opts)
+    const validGetTransactionsResponse = ledgerTransactionFixtures.validTransactionsResponse(opts).getPlain()
+    lodash.defaults(opts.filters, {
+      reference: '',
+      cardholder_name: '',
+      last_digits_card_number: '',
+      email: '',
+      card_brand: '',
+      from_date: '',
+      to_date: '',
+      page: '1',
+      display_size: '100'
+    })
+
+    return [
+      {
+        predicates: [{
+          equals: {
+            method: 'GET',
+            path: `/v1/transaction?with_parent_transaction=true&account_id=${opts.gateway_account_id}&page=${opts.page}&display_size=${opts.display_size}`,
+            headers: {
+              'Accept': 'application/json'
+            },
+            query: opts.filters
+          }
+        }],
+        responses: [{
+          is: {
+            statusCode: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: validGetTransactionsResponse
+          }
+        }]
+      }
+    ]
+  },
+
   getCardTypesSuccess: () => {
     const validCardTypesResponse = cardFixtures.validCardTypesResponse().getPlain()
     return [

@@ -70,7 +70,7 @@ const buildTransactionDetails = (opts = {}) => {
     delayed_capture: opts.delayed_capture || false,
     transaction_type: 'PAYMENT'
   }
-
+  console.log('opts data: ', data)
   if (opts.gateway_transaction_id) {
     data.gateway_transaction_id = opts.gateway_transaction_id
   }
@@ -136,7 +136,7 @@ const buildTransactionDetails = (opts = {}) => {
   if (opts.net_amount) data.net_amount = opts.net_amount
   if (opts.wallet_type) data.wallet_type = opts.wallet_type
   if (opts.metadata) data.metadata = opts.metadata
-
+  console.log('opts data after processing: ', data)
   return data
 }
 
@@ -168,14 +168,17 @@ module.exports = {
   },
   validTransactionsResponse: (opts = {}) => {
     opts.includeSearchResultCardDetails = true
-    const results = lodash.flatMap(opts.transactions, buildTransactionDetails(opts))
-
+    console.log('ledger opts', opts)
+    const results = buildTransactionDetails(opts)
+    console.log('ledger results', results)
     const data = {
       total: opts.transactions.length,
       count: opts.transactions.length,
       page: opts.page || 1,
       results: results
     }
+
+    console.log('ledger data: ', data)
 
     return {
       getPactified: () => pactRegister.pactify(data),

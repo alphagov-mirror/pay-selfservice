@@ -83,7 +83,7 @@ describe('Transactions', () => {
         },
         // unfiltered transactions stub
         {
-          name: 'getTransactionsSuccess',
+          name: 'getLedgerTransactionsSuccess',
           opts: {
             gateway_account_id: gatewayAccountId,
             filters: {},
@@ -92,7 +92,7 @@ describe('Transactions', () => {
         },
         // transactions filtered by from date stub
         {
-          name: 'getTransactionsSuccess',
+          name: 'getLedgerTransactionsSuccess',
           opts: {
             gateway_account_id: gatewayAccountId,
             filters: {
@@ -103,7 +103,7 @@ describe('Transactions', () => {
         },
         // transactions filtered by to date stub
         {
-          name: 'getTransactionsSuccess',
+          name: 'getLedgerTransactionsSuccess',
           opts: {
             gateway_account_id: gatewayAccountId,
             filters: {
@@ -114,7 +114,7 @@ describe('Transactions', () => {
         },
         // transactions filtered by partial email and multiple card brands stub
         {
-          name: 'getTransactionsSuccess',
+          name: 'getLedgerTransactionsSuccess',
           opts: {
             gateway_account_id: gatewayAccountId,
             filters: {
@@ -126,7 +126,7 @@ describe('Transactions', () => {
         },
         // transactions filtered by multiple fields stub
         {
-          name: 'getTransactionsSuccess',
+          name: 'getLedgerTransactionsSuccess',
           opts: {
             gateway_account_id: gatewayAccountId,
             filters: {
