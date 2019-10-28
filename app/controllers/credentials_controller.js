@@ -175,7 +175,7 @@ module.exports = {
     }, function (connectorData, connectorResponse) {
       var duration = new Date() - startTime
       logger.info(`[${correlationId}] - PATCH to ${url} ended - elapsed time: ${duration} ms`)
-      res.redirect(303, router.paths.credentials.index)
+      res.redirect(303, router.paths.yourPsp.index)
     }).on('connectorError', function (err, connectorResponse) {
       var duration = new Date() - startTime
       logger.info(`[${correlationId}] - PATCH to ${url} ended - elapsed time: ${duration} ms`)

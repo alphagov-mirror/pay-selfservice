@@ -1,0 +1,44 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block pageTitle %}
+  Your PSP - {{currentService.name}} {{currentGatewayAccount.full_type}} - GOV.UK Pay
+{% endblock %}
+
+{% block side_navigation %}
+  {% include "includes/side_navigation.njk" %}
+{% endblock %}
+
+{% block mainContent %}
+<div class="govuk-grid-column-two-thirds">
+  <h1 class="govuk-heading-l page-title">Your payment service provider (PSP)</h1>
+
+  <p class="govuk-body">Before you can take payments you must enter the credentials from your PSP so that the accounts can be linked.</p>
+
+{{
+  govukSummaryList({
+    rows: [
+      {
+        key: {
+          text: "Account credentials"
+        },
+        value: {
+          text: "Configured" if isConfigured else "Not configured"
+        },
+        actions: {
+          items: [
+            {
+              href: "/credentials/edit",
+              text: "Change",
+              visuallyHiddenText: "account credentials"
+            }
+          ]
+        }
+      }
+    ]
+  })
+}}
+
+
+</div>
+{% endblock %}
