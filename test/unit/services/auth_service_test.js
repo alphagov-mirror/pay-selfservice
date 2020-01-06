@@ -99,7 +99,7 @@ describe('auth service', function () {
       }
 
       authService(userServiceMock).deserializeUser({headers: {'x-request-id': 'foo'}}, EXTERNAL_ID_IN_SESSION, function (err, returnedUser) {
-        expect(err).to.be.null
+        expect(err).to.be.null //eslint-disable-line
         expect(returnedUser).to.deep.equal(user)
         done()
       })
@@ -269,8 +269,8 @@ describe('auth service', function () {
         }
       }
       const test = auth.getCurrentGatewayAccountId(req)
-      assert.equal(test, 1)
-      assert.equal(req.gateway_account.currentGatewayAccountId, 1)
+      assert.strictEqual(test, 1)
+      assert.strictEqual(req.gateway_account.currentGatewayAccountId, 1)
       done()
     })
 
@@ -282,8 +282,8 @@ describe('auth service', function () {
         }
       }
       const test = auth.getCurrentGatewayAccountId(req)
-      assert.equal(test, 1)
-      assert.equal(req.gateway_account.currentGatewayAccountId, 1)
+      assert.strictEqual(test, 1)
+      assert.strictEqual(req.gateway_account.currentGatewayAccountId, 1)
       done()
     })
 
@@ -297,8 +297,8 @@ describe('auth service', function () {
         }
       }
       const test = auth.getCurrentGatewayAccountId(req)
-      assert.equal(test, 1)
-      assert.equal(req.gateway_account.currentGatewayAccountId, 1)
+      assert.strictEqual(test, 1)
+      assert.strictEqual(req.gateway_account.currentGatewayAccountId, 1)
       done()
     })
 
@@ -329,8 +329,8 @@ describe('auth service', function () {
         }
       }
       const test = auth.getCurrentGatewayAccountId(req)
-      assert.equal(test, 3)
-      assert.equal(req.gateway_account.currentGatewayAccountId, 3)
+      assert.strictEqual(test, 3)
+      assert.strictEqual(req.gateway_account.currentGatewayAccountId, 3)
       done()
     })
 
@@ -340,10 +340,10 @@ describe('auth service', function () {
       const test3 = auth.getCurrentGatewayAccountId({session: {}})
       const test4 = auth.getCurrentGatewayAccountId({})
 
-      assert.equal(test1, null)
-      assert.equal(test2, null)
-      assert.equal(test3, null)
-      assert.equal(test4, null)
+      assert.strictEqual(test1, null)
+      assert.strictEqual(test2, null)
+      assert.strictEqual(test3, null)
+      assert.strictEqual(test4, null)
       done()
     })
   })
