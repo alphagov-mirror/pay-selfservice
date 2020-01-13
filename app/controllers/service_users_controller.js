@@ -59,6 +59,8 @@ module.exports = {
     const externalServiceId = req.service.externalId
 
     const onSuccess = function ([members, invitedMembers]) {
+      console.log('MEMBERS ' + JSON.stringify(members))
+      console.log('INVITES ' + JSON.stringify(invitedMembers))
       const teamMembers = mapByRoles(members, externalServiceId, req.user)
       const numberOfAdminMembers = teamMembers.admin.length
       const numberOfViewOnlyMembers = teamMembers[roles['view-only'].name].length

@@ -433,11 +433,8 @@ module.exports = {
     }
   },
 
-  validUsersResponse: (opts = {}) => {
-    const users = []
-    opts.users.forEach(user => {
-      users.push(buildUserWithDefaults(user))
-    })
+  validUsersResponse: (opts = []) => {
+    const users = opts.map(buildUserWithDefaults)
 
     return {
       getPactified: () => {

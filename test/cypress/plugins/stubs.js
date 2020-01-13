@@ -46,7 +46,7 @@ module.exports = {
     ]
   },
   getUsersSuccess: (opts = {}) => {
-    const aValidUserResponse = userFixtures.validUsersResponse(opts).getPlain()
+    const aValidUserResponse = userFixtures.validUsersResponse(opts.users).getPlain()
     const query = opts.userIds ? opts.userIds.join() : ''
     return [
       {
@@ -113,6 +113,7 @@ module.exports = {
     ]
   },
   getServiceUsersSuccess: (opts = {}) => {
+    console.log('OPTS ' + JSON.stringify(opts))
     const aValidServiceUsersResponse = userFixtures.validUsersResponse(opts.users).getPlain()
     return [
       {
@@ -135,13 +136,13 @@ module.exports = {
     ]
   },
   getInvitedUsersSuccess: (opts = {}) => {
-    const aValidListInvitesResponse = inviteFixtures.validListInvitesResponse(opts.invites)
+    const aValidListInvitesResponse = inviteFixtures.validListInvitesResponse(opts.invites).getPlain()
     return [
       {
         predicates: [{
           equals: {
             method: 'GET',
-            path: '/v1/invites',
+            path: '/v1/api/invites',
             query: {
               serviceId: opts.serviceExternalId
             }
