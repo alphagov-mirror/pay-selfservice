@@ -12,6 +12,10 @@ const serviceFixtures = require('./service_fixtures')
 // Constants
 const defaultPermissions = [
   {
+    name: 'users-service:read',
+    description: 'Viewusersinservice'
+  },
+  {
     name: 'users-service:create',
     description: 'Createuserinthisservice'
   },
