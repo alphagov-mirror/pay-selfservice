@@ -15,6 +15,7 @@ const stripeAccountSetupFixtures = require('../../fixtures/stripe_account_setup_
 const productFixtures = require('../../fixtures/product_fixtures')
 const goCardlessConnectFixtures = require('../../fixtures/go_cardless_connect_fixtures')
 const ledgerFixture = require('../../fixtures/ledger_transaction_fixtures')
+const inviteFixtures = require('../../fixtures/invite_fixtures')
 
 /**
  * Stub definitions added here should always use fixture builders to generate request and response bodys.
@@ -108,6 +109,53 @@ module.exports = {
           }
         }
         ]
+      }
+    ]
+  },
+  getServiceUsersSuccess: (opts = {}) => {
+    const aValidServiceUsersResponse = userFixtures.validUsersResponse(opts.users).getPlain()
+    return [
+      {
+        predicates: [{
+          equals: {
+            method: 'GET',
+            path: `/v1/api/services/${opts.serviceExternalId}/users`
+          }
+        }],
+        responses: [{
+          is: {
+            statusCode: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: aValidServiceUsersResponse
+          }
+        }]
+      }
+    ]
+  },
+  getInvitedUsersSuccess: (opts = {}) => {
+    const aValidListInvitesResponse = inviteFixtures.validListInvitesResponse(opts.invites)
+    return [
+      {
+        predicates: [{
+          equals: {
+            method: 'GET',
+            path: '/v1/invites',
+            query: {
+              serviceId: opts.serviceExternalId
+            }
+          }
+        }],
+        responses: [{
+          is: {
+            statusCode: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: aValidListInvitesResponse
+          }
+        }]
       }
     ]
   },
