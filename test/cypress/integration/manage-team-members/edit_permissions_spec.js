@@ -25,9 +25,13 @@ const getUserStubOpts = function (userExternalId, email, roleName, roleDescripti
 
 describe('Edit service user permissions', () => {
   beforeEach(() => {
-    cy.setEncryptedCookies(AUTHENTICATED_USER_ID, 1)
+    Cypress.Cookies.preserveOnce('session')
+    Cypress.Cookies.preserveOnce('gateway_account')
+
     const authenticatedUserStubOpts = getUserStubOpts(AUTHENTICATED_USER_ID, 'logged-in-user@example.com', 'admin', 'Administrator')
     const userWeAreEditingStubOpts = getUserStubOpts(EDITING_USER_ID, 'other-user@example.com', 'admin', 'Administrator')
+    const viewOnlyUserStubOpts = getUserStubOpts('view-only-user-id', 'view-only-user@example.com', 'view-only', 'View Only')
+    const viewAndRefundUserStubOpts = getUserStubOpts('view-and-refund-user-id', 'view-and-refund-user@example.com', 'view-and-refund', 'View And Refund')
 
     cy.task('setupStubs', [
       {
@@ -44,7 +48,9 @@ describe('Edit service user permissions', () => {
           serviceExternalId: SERVICE_EXTERNAL_ID,
           users: [
             authenticatedUserStubOpts,
-            userWeAreEditingStubOpts
+            userWeAreEditingStubOpts,
+            viewOnlyUserStubOpts,
+            viewAndRefundUserStubOpts
           ]
         }
       },
@@ -62,6 +68,32 @@ describe('Edit service user permissions', () => {
   })
 
   it('should display team members page', () => {
+    cy.setEncryptedCookies(AUTHENTICATED_USER_ID, 1)
+
     cy.visit(`/service/${SERVICE_EXTERNAL_ID}`)
+
+    cy.get('#team-members-admin-list > table').find('tr').first().find('td').first().find('a').contains('logged-in-user@example.com (you)')
+    cy.get('#team-members-admin-list > table').find('tr').eq(1).find('td').first().find('a').contains('other-user@example.com')
+    cy.get('#team-members-view-and-refund-list > table').find('tr').first().find('td').first().find('a').contains('view-and-refund-user@example.com')
+    cy.get('#team-members-view-only-list > table').find('tr').first().find('td').first().find('a').contains('view-only-user@example.com')
+  })
+
+  it('should redirect to team member details page', () => {
+    cy.get('a').contains('other-user@example.com').click()
+
+    cy.get('h1').contains('Details for other-user@example.com')
+    cy.get('table').find('tr').first().find('td').first().contains('other-user@example.com')
+    cy.get('table').find('tr').eq(1).find('td').first().contains('Administrator')
+    cy.get('table').find('tr').eq(1).find('td').eq(1).find('a').contains('Edit permissions')
+  })
+
+  it('should redirect to edit user permissions page', () => {
+    cy.get('a').contains('Edit permissions').click()
+    cy.get('#role-admin-input').should('exist').should('have.attr', 'checked')
+  })
+
+  it('should update permission', () => {
+    cy.get('#role-view-and-refund-input').click()
+    cy.get('button').contains('Save changes').click()
   })
 })
