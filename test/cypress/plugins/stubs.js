@@ -444,6 +444,12 @@ module.exports = {
       response: productFixtures.validCreateProductResponse(opts.product).getPlain()
     })
   },
+  deleteProductSuccess: (opts) => {
+    const path = `/v1/api/gateway-account/${opts.gateway_account_id}/products/${opts.product.external_id}`
+    return simpleStubBuilder('DELETE', path, 200, {
+      verifyCalledTimes: opts.verifyCalledTimes
+    })
+  },
   patchUpdate3DS: (opts = {}) => {
     const path = `/v1/api/frontend/accounts/${opts.gateway_account_id}/3ds-toggle`
     // TODO: this should use a fixture to construct the request body
