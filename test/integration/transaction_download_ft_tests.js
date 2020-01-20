@@ -44,6 +44,12 @@ function downloadTransactionList (query) {
     .set('Accept', 'application/json')
 }
 
+function downloadTransactionListCSV (query) {
+  return request(app)
+    .get(paths.transactions.download + '?' + querystring.stringify(query))
+    .set('Accept', 'text/csv')
+}
+
 describe('Transaction download endpoints', function () {
   afterEach(() => {
     nock.cleanAll()
@@ -294,6 +300,22 @@ describe('Transaction download endpoints', function () {
 
       downloadTransactionList()
         .expect(500, { 'message': 'Internal server error' })
+        .end(done)
+    })
+
+    it('should request with the correct headers', done => {
+      // const results = require('./json/transaction_download_spreadsheet_formula_injection.json')
+
+      process.env.USE_LEDGER_BACKEND_CSV = true
+
+      ledgerMock
+        .matchHeader('accept', 'text/csv')
+        .matchHeader('content-type', 'application/json')
+        .get(LEDGER_TRANSACTION_PATH)
+        .reply(200)
+
+      downloadTransactionListCSV()
+        .expect(200)
         .end(done)
     })
   })
