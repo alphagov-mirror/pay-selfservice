@@ -21,12 +21,12 @@
             {% if paymentProvider === 'sandbox' %}
               Test
             {% elseif paymentProvider === 'stripe' and not stripeAccountIsSetup %}
-              {{ paymentProvider }} {{ currentGatewayAccount.type }} - information needed
+              {{ currentGatewayAccount.type }} - information needed
             {% else %}
-              {{ paymentProvider }} {{ currentGatewayAccount.type }}
+              {{ currentGatewayAccount.type }}
             {% endif %}
           {% endset %}
-          <strong class="govuk-tag {{ tagModifierClass }}">{{ tagText }}</strong>
+          <strong class="service-info--tag govuk-tag {{ tagModifierClass }}">{{ tagText }}</strong>
         {% endif %}
       {% else %}
         <strong class="environment-tag environment-tag-{{currentGatewayAccount.type}}">{% if currentGatewayAccount.full_type === 'Sandbox test' %}Test{% else %}{{currentGatewayAccount.full_type}}{% endif %}</strong>
