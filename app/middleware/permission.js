@@ -6,7 +6,7 @@ const resolveService = require('./resolve_service')
  * For the moment if undefined, the check is skipped.
  */
 module.exports = function (permission) {
-  const isDevelopment = process.env.NODE_END === 'development'
+  const isDevelopment = process.env.NODE_ENV === 'development'
   return [resolveService, function (req, res, next) {
     if (!permission || isDevelopment) {
       return next()
