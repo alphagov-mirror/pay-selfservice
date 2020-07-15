@@ -27,6 +27,7 @@ module.exports = {
             body: opts.message
           },
           group_id: zendeskConfig.GROUP_ID,
+          ticket_form_id: zendeskConfig.FORM_ID,
           organization_id: zendeskConfig.ORG_ID,
           tags: opts.tags
         }
