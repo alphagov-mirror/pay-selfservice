@@ -250,7 +250,11 @@ describe('ledger client', function () {
           type: 'refund',
           capture_submit_time: '2019-09-21T13:14:16.067Z',
           captured_date: '2019-09-21',
-          includePaymentDetails: true
+
+          // @TODO(sfount) once the Ledger provider fixtures include the latest
+          //               flat refund projection, this should be set to true to
+          //               validate the payment_details object
+          includePaymentDetails: false
         },
         {
           amount: 2000,
