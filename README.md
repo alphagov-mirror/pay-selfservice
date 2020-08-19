@@ -69,10 +69,17 @@ If you’re making changes to client-side JS or Sass files (anything within [`/b
 
 ## Running tests
 
-#### To run mocha tests
+#### To run mocha tests locally
+```
+npm run compile && npm run test:local
+```
+
+#### To run mocha tests on CI
+This will run [Snyk](https://snyk.io/) as well.
 ```
 npm run compile && npm test
 ```
+
 #### Debug tests using Visual Studio Code
 
 ##### IMPORTANT NOTE - some tests do not work in debug mode
