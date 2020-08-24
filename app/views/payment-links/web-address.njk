@@ -26,7 +26,7 @@
       <span class="govuk-hint pay-text-black">
         {{friendlyURL}}/{{currentService.name | removeIndefiniteArticles | slugify}}/
       </span>
-      {% if flash.genericError %}
+      {% if flash.genericErrorOld %}
         <span id="payment-name-path-error" class="govuk-error-message">
           The website address is already taken
         </span>

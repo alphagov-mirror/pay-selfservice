@@ -132,9 +132,9 @@ describe('POST payment link edit amount controller', () => {
     })
 
     it('should redirect with error message', () => {
-      expect(session.flash).to.have.property('genericError')
-      expect(session.flash.genericError.length).to.equal(1)
-      expect(session.flash.genericError[0]).to.equal('<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#fixed-or-variable">Is the payment for a fixed amount?</a></li></ul>')
+      expect(session.flash).to.have.property('genericErrorOld')
+      expect(session.flash.genericErrorOld.length).to.equal(1)
+      expect(session.flash.genericErrorOld[0]).to.equal('<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#fixed-or-variable">Is the payment for a fixed amount?</a></li></ul>')
     })
   })
 
@@ -170,9 +170,9 @@ describe('POST payment link edit amount controller', () => {
     })
 
     it('should redirect with error message', () => {
-      expect(session.flash).to.have.property('genericError')
-      expect(session.flash.genericError.length).to.equal(1)
-      expect(session.flash.genericError[0]).to.equal('<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#payment-amount">Enter the amount</a></li></ul>')
+      expect(session.flash).to.have.property('genericErrorOld')
+      expect(session.flash.genericErrorOld.length).to.equal(1)
+      expect(session.flash.genericErrorOld[0]).to.equal('<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#payment-amount">Enter the amount</a></li></ul>')
     })
   })
 })

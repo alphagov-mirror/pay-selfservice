@@ -22,7 +22,7 @@
     {% endif %}
 
     {% set titleError = false %}
-    {% if flash.genericError %}
+    {% if flash.genericErrorOld %}
     {% set titleError = {
       text: "This field cannot be blank"
     } %}

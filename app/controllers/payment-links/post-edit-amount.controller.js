@@ -14,7 +14,7 @@ module.exports = (req, res) => {
   const editData = lodash.get(req, 'session.editPaymentLinkData', {})
 
   if (!paymentAmountType) {
-    req.flash('genericError', `<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#fixed-or-variable">Is the payment for a fixed amount?</a></li></ul>`)
+    req.flash('genericErrorOld', `<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#fixed-or-variable">Is the payment for a fixed amount?</a></li></ul>`)
     req.flash('errorType', `paymentAmountType`)
     return res.redirect(formattedPathFor(paths.paymentLinks.editAmount, req.params.productExternalId))
   }
@@ -22,7 +22,7 @@ module.exports = (req, res) => {
   let sanitisedAmount = safeConvertPoundsStringToPence(paymentLinkAmount)
 
   if (paymentLinkAmount !== '' && sanitisedAmount === null) {
-    req.flash('genericError', `<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#payment-amount">Enter the amount</a></li></ul>`)
+    req.flash('genericErrorOld', `<h2>There was a problem with the details you gave for:</h2><ul class="error-summary-list"><li><a href="#payment-amount">Enter the amount</a></li></ul>`)
     req.flash('errorType', `paymentAmountFormat`)
     return res.redirect(formattedPathFor(paths.paymentLinks.editAmount, req.params.productExternalId))
   }

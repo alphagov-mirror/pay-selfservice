@@ -8,7 +8,7 @@ const { invalidTelephoneNumber } = require('../../../utils/validation/telephone-
 
 module.exports = async (req, res) => {
   if (invalidTelephoneNumber(req.body.phone)) {
-    req.flash('genericError', '<h2>There was a problem with the details you gave for:</h2><ul class="govuk-list govuk-error-summary__list"><li><a href="#phone">Invalid telephone number.</a></li></ul>')
+    req.flash('genericErrorOld', '<h2>There was a problem with the details you gave for:</h2><ul class="govuk-list govuk-error-summary__list"><li><a href="#phone">Invalid telephone number.</a></li></ul>')
     return res.redirect(paths.user.phoneNumber)
   }
 

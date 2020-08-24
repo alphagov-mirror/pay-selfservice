@@ -1,18 +1,33 @@
 {% block flash %}
   <div class="govuk-grid-column-two-thirds">
     {% if flash.genericError %}
-    <div class="flash-container">
-      <div class="notification generic-error error-summary">
-        {{ flash.genericError | safe }}
+      <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+          There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <li>
+              {{ flash.genericError | safe }}
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    {% endif %}
+    {# TODO: remove when we are no longer passing markup in flash messages #}
+    {% if flash.genericErrorOld %}
+      <div class="flash-container">
+        <div class="notification generic-error error-summary">
+          {{ flash.genericErrorOld | safe }}
+        </div>
+      </div>
     {% endif %}
     {% if flash.generic %}
-    <div class="flash-container flash-container--good">
-      <div class="notification generic-flash">
-        {{ flash.generic | safe }}
+      <div class="flash-container flash-container--good">
+        <div class="notification generic-flash">
+          {{ flash.generic | safe }}
+        </div>
       </div>
-    </div>
     {% endif %}
   </div>
 {% endblock %}
