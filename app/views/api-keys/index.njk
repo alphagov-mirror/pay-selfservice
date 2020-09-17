@@ -17,7 +17,10 @@ API Keys - {{currentService.name}} {{currentGatewayAccount.full_type}} - GOV.UK 
 {% endset %}
 
   <div class="govuk-tabs">
-    <ul class="govuk-tabs__list">
+    <h2 class="govuk-tabs__title">
+      API Keys
+    </h2>
+    {# <ul class="govuk-tabs__list">
       {% if active %}
         <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
           <a class="govuk-tabs__tab" href="#active-keys" aria-selected="true">
@@ -41,7 +44,7 @@ API Keys - {{currentService.name}} {{currentGatewayAccount.full_type}} - GOV.UK 
           </a>
         </li>
       {% endif %}
-    </ul>
+    </ul> #}
     {% include "./_keys.njk" %}
   </div>
 </div>
