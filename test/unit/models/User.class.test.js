@@ -62,4 +62,19 @@ describe('Class: User', () => {
       expect(result).to.include(permission)
     })
   })
+
+  describe('Method: isInternalUser', () => {
+    it('should return false', () => {
+      process.env.GDS_INTERNAL_USER_EMAIL_DOMAIN = '@example.org'
+      user = user = new User(userFixtures.validUserResponse().getPlain())
+      result = user.isInternalUser()
+      expect(result).to.equal(false)
+    })
+    it('should return true', function () {
+      process.env.GDS_INTERNAL_USER_EMAIL_DOMAIN = '@example.com'
+      user = user = new User(userFixtures.validUserResponse().getPlain())
+      result = user.isInternalUser()
+      expect(result).to.equal(true)
+    })
+  })
 })
