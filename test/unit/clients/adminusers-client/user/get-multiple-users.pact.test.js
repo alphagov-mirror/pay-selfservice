@@ -1,20 +1,23 @@
 'use strict'
 const { Pact } = require('@pact-foundation/pact')
-let path = require('path')
-let chai = require('chai')
-let chaiAsPromised = require('chai-as-promised')
-let userFixtures = require('../../../../fixtures/user.fixtures')
-let random = require('../../../../../app/utils/random')
-let getAdminUsersClient = require('../../../../../app/services/clients/adminusers.client')
-let PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
-let port = Math.floor(Math.random() * 48127) + 1024
-let adminusersClient = getAdminUsersClient({ baseUrl: `http://localhost:${port}` })
+const path = require('path')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const userFixtures = require('../../../../fixtures/user.fixtures')
+const random = require('../../../../../app/utils/random')
+const getAdminUsersClient = require('../../../../../app/services/clients/adminusers.client')
+const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const port = Math.floor(Math.random() * 48127) + 1024
+const adminusersClient = getAdminUsersClient({ baseUrl: `http://localhost:${port}` })
+const { userReponsePactifier } = require('../../../../test-helpers/pact/pactifier')
+
 chai.use(chaiAsPromised)
+
 const { expect } = chai
 const USER_PATH = '/v1/api/users'
 
 describe('adminusers client - get users', function () {
-  let provider = new Pact({
+  const provider = new Pact({
     consumer: 'selfservice-to-be',
     provider: 'adminusers',
     port: port,
@@ -28,12 +31,12 @@ describe('adminusers client - get users', function () {
   after(() => provider.finalize())
 
   describe('success', () => {
-    let existingExternalIds = [
+    const existingExternalIds = [
       random.randomUuid(),
       random.randomUuid()
     ]
 
-    let params = existingExternalIds.map(existingExternalId => {
+    const params = existingExternalIds.map(existingExternalId => {
       return {
         external_id: existingExternalId,
         service_roles: [{
@@ -44,7 +47,8 @@ describe('adminusers client - get users', function () {
       }
     })
 
-    let getUserResponse = userFixtures.validMultipleUserResponse(params)
+    const getUsersResponseRaw = userFixtures.validMultipleUserResponse(params)
+    const getUsersResponsePactified = userReponsePactifier.pactifySimpleArray(getUsersResponseRaw)
 
     before((done) => {
       provider.addInteraction(
@@ -52,7 +56,7 @@ describe('adminusers client - get users', function () {
           .withQuery('ids', existingExternalIds.join())
           .withState('the given external id all refer to existing users')
           .withUponReceiving('a valid get users request')
-          .withResponseBody(getUserResponse.getPactified())
+          .withResponseBody(getUsersResponsePactified)
           .build()
       ).then(() => done())
     })
@@ -60,27 +64,25 @@ describe('adminusers client - get users', function () {
     afterEach(() => provider.verify())
 
     it('should find users successfully', function () {
-      let expectedUserData = getUserResponse.getPlain()
-
-      let result = expect(adminusersClient.getUsersByExternalIds(existingExternalIds))
+      const result = expect(adminusersClient.getUsersByExternalIds(existingExternalIds))
 
       return result.to.be.fulfilled.then(function (users) {
         users.forEach((user, index) => {
-          expect(user.externalId).to.be.equal(expectedUserData[index].external_id)
-          expect(user.username).to.be.equal(expectedUserData[index].username)
-          expect(user.email).to.be.equal(expectedUserData[index].email)
+          expect(user.externalId).to.be.equal(getUsersResponseRaw[index].external_id)
+          expect(user.username).to.be.equal(getUsersResponseRaw[index].username)
+          expect(user.email).to.be.equal(getUsersResponseRaw[index].email)
           expect(user.serviceRoles.length).to.be.equal(1)
           expect(user.serviceRoles[0].service.gatewayAccountIds.length).to.be.equal(2)
-          expect(user.telephoneNumber).to.be.equal(expectedUserData[index].telephone_number)
-          expect(user.otpKey).to.be.equal(expectedUserData[index].otp_key)
-          expect(user.serviceRoles[0].role.permissions.length).to.be.equal(expectedUserData[index].service_roles[0].role.permissions.length)
+          expect(user.telephoneNumber).to.be.equal(getUsersResponseRaw[index].telephone_number)
+          expect(user.otpKey).to.be.equal(getUsersResponseRaw[index].otp_key)
+          expect(user.serviceRoles[0].role.permissions.length).to.be.equal(getUsersResponseRaw[index].service_roles[0].role.permissions.length)
         })
       })
     })
   })
 
   describe('not found', () => {
-    let existingExternalIds = [
+    const existingExternalIds = [
       random.randomUuid(),
       random.randomUuid()
     ]
