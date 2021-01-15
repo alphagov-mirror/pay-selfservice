@@ -88,7 +88,7 @@ const stripeSetupDashboardRedirectController = require('./controllers/stripe-set
 const {
   healthcheck, registerUser, user, dashboard, selfCreateService, transactions, credentials,
   serviceSwitcher, teamMembers, staticPaths, inviteValidation, editServiceName, merchantDetails,
-  notificationCredentials, prototyping, paymentLinks,
+  notificationCredentials, paymentLinks,
   requestToGoLive, policyPages, stripeSetup, stripe,
   settings, yourPsp, allServiceTransactions, payouts
 } = paths
@@ -99,7 +99,8 @@ const {
   paymentTypes,
   toggle3ds,
   toggleBillingAddress,
-  toggleMotoMaskCardNumberAndSecurityCode
+  toggleMotoMaskCardNumberAndSecurityCode,
+  prototyping
 } = paths.account
 
 // Exports
@@ -304,18 +305,18 @@ module.exports.bind = function (app) {
   account.post(toggleBillingAddress.index, permission('toggle-billing-address:update'), toggleBillingAddressController.postIndex)
 
   // Prototyping
-  app.get(prototyping.demoService.index, permission('transactions:read'), resolveService, getAccount, restrictToSandbox, testWithYourUsersController.index)
-  app.get(prototyping.demoService.links, permission('transactions:read'), resolveService, getAccount, restrictToSandbox, testWithYourUsersController.links)
-  app.get(prototyping.demoService.create, permission('transactions:read'), resolveService, getAccount, restrictToSandbox, testWithYourUsersController.create)
-  app.post(prototyping.demoService.confirm, permission('transactions:read'), resolveService, getAccount, restrictToSandbox, testWithYourUsersController.submit)
-  app.get(prototyping.demoService.disable, permission('transactions:read'), resolveService, getAccount, restrictToSandbox, testWithYourUsersController.disable)
+  account.get(prototyping.demoService.index, permission('transactions:read'), restrictToSandbox, testWithYourUsersController.index)
+  account.get(prototyping.demoService.links, permission('transactions:read'), restrictToSandbox, testWithYourUsersController.links)
+  account.get(prototyping.demoService.create, permission('transactions:read'), restrictToSandbox, testWithYourUsersController.create)
+  account.post(prototyping.demoService.confirm, permission('transactions:read'), restrictToSandbox, testWithYourUsersController.submit)
+  account.get(prototyping.demoService.disable, permission('transactions:read'), restrictToSandbox, testWithYourUsersController.disable)
 
-  app.get(prototyping.demoPayment.index, permission('transactions:read'), getAccount, restrictToSandbox, makeADemoPaymentController.index)
-  app.post(prototyping.demoPayment.index, permission('transactions:read'), getAccount, restrictToSandbox, makeADemoPaymentController.index)
-  app.get(prototyping.demoPayment.editDescription, permission('transactions:read'), getAccount, restrictToSandbox, makeADemoPaymentController.edit)
-  app.get(prototyping.demoPayment.editAmount, permission('transactions:read'), getAccount, restrictToSandbox, makeADemoPaymentController.edit)
-  app.get(prototyping.demoPayment.mockCardDetails, permission('transactions:read'), getAccount, restrictToSandbox, makeADemoPaymentController.mockCardDetails)
-  app.post(prototyping.demoPayment.goToPaymentScreens, permission('transactions:read'), getAccount, restrictToSandbox, makeADemoPaymentController.goToPayment)
+  account.get(prototyping.demoPayment.index, permission('transactions:read'), restrictToSandbox, makeADemoPaymentController.index)
+  account.post(prototyping.demoPayment.index, permission('transactions:read'), restrictToSandbox, makeADemoPaymentController.index)
+  account.get(prototyping.demoPayment.editDescription, permission('transactions:read'), restrictToSandbox, makeADemoPaymentController.edit)
+  account.get(prototyping.demoPayment.editAmount, permission('transactions:read'), restrictToSandbox, makeADemoPaymentController.edit)
+  account.get(prototyping.demoPayment.mockCardDetails, permission('transactions:read'), restrictToSandbox, makeADemoPaymentController.mockCardDetails)
+  account.post(prototyping.demoPayment.goToPaymentScreens, permission('transactions:read'), restrictToSandbox, makeADemoPaymentController.goToPayment)
 
   // Create payment link
   app.get(paymentLinks.start, permission('tokens:create'), getAccount, paymentLinksController.getStart)
