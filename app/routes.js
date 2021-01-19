@@ -193,10 +193,9 @@ module.exports.bind = function (app) {
     ...lodash.values(user.profile),
     ...lodash.values(requestToGoLive),
     ...lodash.values(policyPages),
-    ...lodash.values(stripeSetup),
-    ...lodash.values(stripe),
     ...lodash.values(yourPsp),
     ...lodash.values(payouts),
+    ...lodash.values(redirects),
     paths.feedback
   ] // Extract all the authenticated paths as a single array
 
