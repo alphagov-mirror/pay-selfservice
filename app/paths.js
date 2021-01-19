@@ -89,7 +89,19 @@ module.exports = {
         editMetadata: '/create-payment-link/manage/:productExternalId/add-reporting-column/:metadataKey',
         deleteMetadata: '/create-payment-link/manage/:productExternalId/add-reporting-column/:metadataKey/delete'
       }
+    },
+    stripeSetup: {
+      bankDetails: '/bank-details',
+      responsiblePerson: '/responsible-person',
+      vatNumber: '/vat-number',
+      companyNumber: '/company-number'
+    },
+    stripe: {
+      addPspAccountDetails: '/stripe/add-psp-account-details'
     }
+  },
+  redirects: {
+    stripeSetupLiveDashboardRedirect: '/service/:externalServiceId/dashboard/live'
   },
   transactions: {
     index: '/transactions',
@@ -196,16 +208,6 @@ module.exports = {
   },
   policyPages: {
     download: '/policy/download/:key'
-  },
-  stripeSetup: {
-    bankDetails: '/bank-details',
-    responsiblePerson: '/responsible-person',
-    vatNumber: '/vat-number',
-    companyNumber: '/company-number',
-    stripeSetupLink: '/service/:externalServiceId/dashboard/live'
-  },
-  stripe: {
-    addPspAccountDetails: '/stripe/add-psp-account-details'
   },
   payouts: {
     list: '/payments-to-your-bank-account'
