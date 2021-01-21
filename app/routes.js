@@ -86,14 +86,15 @@ const stripeSetupDashboardRedirectController = require('./controllers/stripe-set
 
 // Assignments
 const {
-  healthcheck, registerUser, user, dashboard, selfCreateService, transactions,
+  healthcheck, registerUser, user, selfCreateService, transactions,
   serviceSwitcher, teamMembers, staticPaths, inviteValidation, editServiceName, merchantDetails,
   requestToGoLive, policyPages,
-  allServiceTransactions, payouts, redirects
+  allServiceTransactions, payouts, redirects, index
 } = paths
 const {
   apiKeys,
   credentials,
+  dashboard,
   digitalWallet,
   emailNotifications,
   notificationCredentials,
@@ -150,7 +151,6 @@ module.exports.bind = function (app) {
   // LOGIN
   app.get(user.logIn, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, redirectLoggedInUser, loginController.loginGet)
   app.post(user.logIn, validateAndRefreshCsrf, trimUsername, loginController.loginUser, hasServices, resolveService, getAccount, loginController.postLogin)
-  app.get(dashboard.index, enforceUserAuthenticated, validateAndRefreshCsrf, hasServices, resolveService, getAccount, dashboardController.dashboardActivity)
   app.get(user.noAccess, loginController.noAccess)
   app.get(user.logOut, loginController.logout)
   app.get(user.otpSendAgain, enforceUserFirstFactor, validateAndRefreshCsrf, loginController.sendAgainGet)
@@ -198,6 +198,9 @@ module.exports.bind = function (app) {
 
   app.use(authenticatedPaths, enforceUserAuthenticated, validateAndRefreshCsrf) // Enforce authentication on all get requests
   app.use(authenticatedPaths.filter(item => !lodash.values(serviceSwitcher).includes(item)), hasServices) // Require services everywhere but the switcher page
+
+  // Site index - redirect to dashboard for last visited account
+  app.get(index, enforceUserAuthenticated, validateAndRefreshCsrf, hasServices, resolveService, getAccount, dashboardController.redirectToDashboard)
 
   // -------------------------
   // OUTSIDE OF SERVICE ROUTES
@@ -265,6 +268,9 @@ module.exports.bind = function (app) {
   // ----------------------------
   // GATEWAY ACCOUNT LEVEL ROUTES
   // ----------------------------
+
+  // Dashboard
+  account.get(dashboard.index, dashboardController.dashboardActivity)
 
   // Transactions
   app.get(transactions.index, permission('transactions:read'), getAccount, paymentMethodIsCard, transactionsListController)
