@@ -89,12 +89,6 @@ describe('The transaction list view', function () {
       'results': [
         buildTransaction(100, '£50.00', 'Declined', 'failed', 'Visa', 'example1@mail.fake')
       ],
-      permissions: {
-        'transactions_email_read': true,
-        'transactions_amount_read': true,
-        'transactions_card_type_read': true,
-        'transactions_download_read': true
-      },
       hasResults: true,
       total: 9999,
       showCsvDownload: true,
